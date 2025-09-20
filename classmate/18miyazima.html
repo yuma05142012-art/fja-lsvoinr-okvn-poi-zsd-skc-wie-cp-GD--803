@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>18番 宮島瑠里</title>
+    <link rel="stylesheet" href="nigunn.css">
+    <link rel="stylesheet" href="atagu.css">
+</head>
+<body>
+    <div class="content">
+    <span class="box">宮島瑠里</span>
+    <!-- <p><img src="../img/18miyazima.png" alt="" class="fade-item" width="300"></p> -->
+    <h2 class="fade-item">性格<h2>
+    <h4 class="fade-item">穏やかな人なのか？笑</h4>
+    <h2 class="fade-item">誰と仲が良い？</h2>
+    <h4 class="fade-item">奧野・石井・野々村さん達と仲が良い</h4>
+    <h2 class="fade-item">部活は？</h2>
+    <h4 class="fade-item">英語部だったと思う</h4>
+    <h2 class="fade-item">恋愛は('^')？</h2>
+    <h4 class="fade-item">興味あると思う（小学校の時に好きな人がいたとか誰かから聞いたことがある）</h4>
+    <h2 class="fade-item">黒歴史は？</h2>
+    <h4 class="fade-item">今の所知らない</h4>
+    <h2 class="fade-item">その他</h2>
+    <h4 class="fade-item">同志社国際小学校から来てる人</h4>
+    <h2 class="fade-item">誕生日は？</h2>
+    <h4 class="fade-item">4月13日</h4>
+    <h2 class="fade-item">どこに住んでるの？（家の近くの駅とか）</h2>
+    <h4 class="fade-item">最寄り駅は高の原駅</h4>
+    <!-- <h4 class="fade-item">奈良県の登美ヶ丘に住んでいるらしい（最寄り駅は高の原駅）</h4> -->
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+          const items = document.querySelectorAll('.fade-item');
+          items.forEach((item, index) => {
+            // indexごとに0.5秒ずつ遅らせてフェードイン
+            setTimeout(() => {
+              item.classList.add('loaded');
+            }, index * 500); 
+          });
+        });
+      </script>
+
+<script>
+    // ページ読み込み後に順番にフェードイン
+    window.addEventListener('load', function() {
+      const boxes = document.querySelectorAll('.box');
+      boxes.forEach((box, index) => {
+        setTimeout(() => {
+          box.classList.add('loaded');
+        }, index * 500); // 0.5秒ずつ遅らせる
+      });
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,19 @@
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    background: #0b84ff;  /* 背景は青のまま */
+    color: #000;          /* ← 文字色を黒に変更 */
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    user-select: none;
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 1px;
+    transition: background 0.3s ease;
+  }
+  

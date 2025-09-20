@@ -1,0 +1,81 @@
+/* ベーススタイル */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Kaku Gothic ProN",
+      "Yu Gothic", sans-serif;
+    background: #f7f7f8; /* iOSっぽい薄いグレー */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* ログインと保護領域のカード */
+  #login, #protected {
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 360px; /* iPhone幅にフィット */
+    box-sizing: border-box;
+  }
+  
+  /* ラベルと入力 */
+  #login label {
+    display: block;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 6px;
+  }
+  
+  #pw {
+    width: 100%;
+    padding: 14px 12px;
+    font-size: 17px; /* iPhone標準くらい */
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-sizing: border-box;
+  }
+  
+  /* ボタン */
+  #go, #logout {
+    width: 100%;
+    margin-top: 14px;
+    padding: 14px;
+    font-size: 17px;
+    border: none;
+    border-radius: 12px;
+    background: #007aff; /* iOSブルー */
+    color: white;
+  }
+  
+  #go:active, #logout:active {
+    background: #005bb5;
+  }
+  
+  /* メッセージ */
+  #msg {
+    margin-top: 10px;
+    font-size: 14px;
+    color: red;
+  }
+  
+  /* iPhone向けのレスポンシブ調整 */
+  @media (max-width: 480px) {
+    body {
+      padding: 12px;
+    }
+  
+    #login, #protected {
+      padding: 16px;
+      max-width: 100%; /* 小さい画面ではフル幅 */
+    }
+  
+    #pw, #go, #logout {
+      font-size: 16px;
+      padding: 12px;
+    }
+  }
+  

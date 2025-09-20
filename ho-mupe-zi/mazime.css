@@ -1,0 +1,92 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+    padding: 30px;
+    background: #fafafa;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+  }
+  
+  .ranking {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 400px;
+  }
+  
+  /* 各ランキング項目の初期状態 */
+  .ranking li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+    padding: 8px;
+    border-radius: 8px;
+    background: #f7f7f7;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  
+  /* 表示状態 */
+  .ranking li.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* 画像を丸く表示 */
+  .ranking img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+  }
+  
+  /* 名前や順位 */
+  .ranking .info {
+    font-size: 18px;
+  }
+  
+  /* 1位だけ特別デザイン */
+  .ranking li.first {
+    background: linear-gradient(90deg, #ffd54f, #ffeb3b);
+    font-weight: bold;
+    border: 2px solid gold;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  }
+  
+  .ranking li.first img {
+    border: 3px solid gold;
+  }
+  /* 2位（銀） */
+.ranking li.second {
+    background: linear-gradient(90deg, #e0e0e0, #bdbdbd);
+    font-weight: bold;
+    border: 2px solid #c0c0c0;
+    box-shadow: 0 0 8px rgba(192, 192, 192, 0.6);
+  }
+  
+  .ranking li.second img {
+    border: 3px solid #c0c0c0;
+  }
+  
+  /* 3位（銅） */
+  .ranking li.third {
+    background: linear-gradient(90deg, #cd7f32, #d2691e);
+    font-weight: bold;
+    border: 2px solid #b87333;
+    box-shadow: 0 0 8px rgba(184, 115, 51, 0.6);
+  }
+  
+  .ranking li.third img {
+    border: 3px solid #b87333;
+  }
+
+/* big-text クラスを持つ a タグだけ文字を大きくする */
+a.big-text {
+    font-size: 24px; /* 好きな大きさに変更 */
+    font-weight: bold; /* 任意で太字に */
+  }

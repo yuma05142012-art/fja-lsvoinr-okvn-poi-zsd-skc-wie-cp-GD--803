@@ -1,0 +1,33 @@
+a.big-link {
+    font-size: 200%; /* このリンクだけデカく */
+  }
+
+  .box {
+    display: inline-block;      /* spanでもボックス化 */
+    border: 3px solid black;
+    padding: 10px 20px;
+    font-size: 2em;
+  
+    /* フェードイン用 */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+  }
+  
+  .box.loaded {
+    opacity: 1;
+    transform: translateY(0);
+  }  
+
+/* フェードイン対象は最初透明 */
+.fade-item {
+  opacity: 0;
+  transform: translateY(20px); /* 下から少し浮かび上がる演出 */
+  transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+}
+
+/* クラス追加で表示 */
+.fade-item.loaded {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- これ重要 -->
+  <title>お知らせ履歴</title>
+  <link rel="stylesheet" href="gh.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", sans-serif;
+      background: linear-gradient(135deg, #1d3557, #457b9d);
+      color: #f1faee;
+      opacity: 0;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      margin-bottom: 40px;
+      animation: slideUp 0.8s ease forwards;
+      transform: translateY(30px);
+      opacity: 0;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.2s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes slideUp {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #a8dadc;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    /* 📱 スマホ対応 (幅600px以下のとき適用) */
+    @media (max-width: 600px) {
+      .container {
+        margin: 30px auto;
+        padding: 0 15px;
+      }
+
+      .card {
+        padding: 20px 25px;
+        border-radius: 14px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">⬅ 元のページに戻る</a>
+  <div class="container">
+    <!-- 最新のお知らせを一番上に追加していく -->
+    <div class="card">
+      <h2>📌 2025年9月第4週のお知らせ</h2>
+      <p>
+        ・サイトのセキュリティーの強化した
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>📌 2025年9月第3週のお知らせ</h2>
+      <p>
+        ・この元のクラスのサイトを作っているのがバレた
+        ・なぜか、井筒が喧嘩したのに加藤達と仲直りしようとした（仲悪くなったらぼっちになるため）
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>📌 2025年9月第2週のお知らせ</h2>
+      <p>
+        ・井筒が加藤・高矢と喧嘩した。そのため、仲が悪くなった。
+      </p>
+    </div>
+    
+  </div>
+</body>
+</html>

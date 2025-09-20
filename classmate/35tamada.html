@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>35番 玉田絵里子</title>
+    <link rel="stylesheet" href="nigunn.css">
+    <link rel="stylesheet" href="atagu.css">
+
+</head>
+<body>
+    <div class="content">
+    <span class="box">玉田絵里子</span>
+    <!-- <p><img src="../img/35tamada.png" alt="" class="fade-item" width="300"></p> -->
+    <h2 class="fade-item">性格<h2>
+    <h4 class="fade-item">穏やかな人</h4>
+    <h2 class="fade-item">誰と仲が良い？</h2>
+    <h4 class="fade-item">末吉・近藤・世古口・田村さん達と仲良し</h4>
+    <h2 class="fade-item">部活は？</h2>
+    <h4 class="fade-item">バスケ部</h4>
+    <h2 class="fade-item">恋愛は('^')？</h2>
+    <h4 class="fade-item">興味あると思う</h4>
+    <h2 class="fade-item">黒歴史は？</h2>
+    <h4 class="fade-item">今の所知らない</h4>
+    <h2 class="fade-item">その他</h2>
+    <h4 class="fade-item">クラスの中で二番目くらに真面目</h4>
+    <h2 class="fade-item">誕生日は？</h2>
+    <h4 class="fade-item">不明</h4>
+    <h2 class="fade-item">どこに住んでるの？（家の近くの駅とか）</h2>
+    <h4 class="fade-item">芦屋で新快速から乗り換えているから、芦屋から三ノ宮の間の駅のどっかに住んでいると思う</h4>
+    </div>
+    <script>
+        window.addEventListener('load', function() {
+          const items = document.querySelectorAll('.fade-item');
+          items.forEach((item, index) => {
+            // indexごとに0.5秒ずつ遅らせてフェードイン
+            setTimeout(() => {
+              item.classList.add('loaded');
+            }, index * 500); 
+          });
+        });
+      </script>
+
+<script>
+    // ページ読み込み後に順番にフェードイン
+    window.addEventListener('load', function() {
+      const boxes = document.querySelectorAll('.box');
+      boxes.forEach((box, index) => {
+        setTimeout(() => {
+          box.classList.add('loaded');
+        }, index * 500); // 0.5秒ずつ遅らせる
+      });
+    });
+  </script>
+</body>
+</html>
+

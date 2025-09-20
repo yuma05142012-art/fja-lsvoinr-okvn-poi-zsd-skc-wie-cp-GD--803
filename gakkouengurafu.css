@@ -1,0 +1,53 @@
+.test {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .circle-container {
+    display: flex;
+    gap: 40px;
+  }
+  
+  .circle {
+    width: 150px;
+    height: 150px;
+    position: relative;
+    text-align: center;
+  }
+  
+  svg {
+    width: 120px;
+    height: 120px;
+    transform: rotate(-90deg);
+  }
+  
+  circle {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+  }
+  
+  circle.bg {
+    stroke: #eee;
+  }
+  
+  circle.progress {
+    stroke: #2196f3;
+    transition: stroke-dashoffset 1.2s ease;
+  }
+  
+  .number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  p {
+    margin-top: 10px;
+    font-size: 14px;
+  }

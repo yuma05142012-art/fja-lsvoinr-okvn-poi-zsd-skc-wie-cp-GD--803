@@ -1,0 +1,13 @@
+.big-link {
+    font-size: 24px;   /* 文字サイズを大きく */
+    font-weight: bold; /* 太字にしたい場合 */
+    color: #0ea5a9;    /* 色を変える例（お好みで） */
+    text-decoration: none; /* 下線を消す例 */
+  }
+  
+  @media (max-width:430px) {
+    .big-link {
+      font-size: 20px; /* スマホ用に少し小さめ */
+    }
+  }
+  

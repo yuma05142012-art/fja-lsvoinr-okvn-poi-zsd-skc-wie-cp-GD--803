@@ -1,0 +1,56 @@
+<!-- simple-password.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>パスワード保護（簡易）</title>
+  <style>
+    #protected { display:none; }
+  </style>
+  <meta name="robots" content="noindex">
+  <base href="https://yuma05142012-art.github.io/fjaobip34092byctexertubnnijmn8b7tv6v/">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div id="login">
+    <label>パスワード: <input id="pw" type="password"></label>
+    <button id="go">入る</button>
+    <p id="msg"></p>
+  </div>
+
+  <div id="protected">
+    <a href="1hmatome/matome.html" >ここを押してください</a>
+    <button id="logout">ログアウト</button>
+  </div>
+
+  <script>
+    // *** 注意: ここに書く password は絶対に公開データにしないでください ***
+    const REAL = "yuma0514"; // テスト用パスワード（公開禁止）
+    const loginDiv = document.getElementById("login");
+    const protectedDiv = document.getElementById("protected");
+    const msg = document.getElementById("msg");
+
+    function showProtected(){
+      loginDiv.style.display = "none";
+      protectedDiv.style.display = "block";
+    }
+
+    if (sessionStorage.getItem("authed") === "1") showProtected();
+
+    document.getElementById("go").addEventListener("click", ()=>{
+      const v = document.getElementById("pw").value;
+      if (v === REAL) {
+        sessionStorage.setItem("authed", "1");
+        showProtected();
+      } else {
+        msg.textContent = "パスワードが違います";
+      }
+    });
+
+    document.getElementById("logout").addEventListener("click", ()=>{
+      sessionStorage.removeItem("authed");
+      location.reload();
+    });
+  </script>
+</body>
+</html>

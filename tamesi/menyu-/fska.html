@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>カッコいいドロップダウン</title>
+<link rel="stylesheet" href="fska.css">
+<style>
+  :root{
+    --bg:#ffffff;
+    --accent:#0b84ff;
+    --text:#222;
+    --shadow: 0 6px 18px rgba(0,0,0,0.12);
+  }
+
+  body {
+    margin:0;
+    font-family: system-ui, -apple-system, "Helvetica Neue", "Yu Gothic",
+                 "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+  }
+
+  /* 左上に固定 */
+  .top-left {
+    position: fixed;
+    left: 12px;
+    top: 12px;
+    z-index: 1000;
+  }
+
+  /* メニューボタン */
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,0.08);
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,245,245,0.9));
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    user-select: none;
+    font-weight: 600;
+  }
+
+  /* ドロップダウン全体 */
+  .dropdown {
+    position: absolute;
+    left: 0;
+    margin-top: 10px;
+    min-width: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    background: white;
+    border: 1px solid rgba(0,0,0,0.06);
+
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* 開いた時 */
+  .dropdown.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* 各リンク */
+  .dropdown a {
+    display: block;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+    color: var(--text);
+    font-size: 14px;
+
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .dropdown a:last-child { border-bottom: none; }
+
+  /* 開いたときに順番に出る */
+  .dropdown.show a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .dropdown.show a:nth-child(1) { transition-delay: 0.05s; }
+  .dropdown.show a:nth-child(2) { transition-delay: 0.15s; }
+  .dropdown.show a:nth-child(3) { transition-delay: 0.25s; }
+  .dropdown.show a:nth-child(4) { transition-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+<div class="top-left" id="topLeftMenu">
+  <button class="menu-btn" id="menuToggle">メニュー</button>
+  <nav class="dropdown" id="menuList">
+    <a href="index.html">ホーム</a>
+    <a href="news.html">お知らせ</a>
+    <a href="contact.html">お問い合わせ</a>
+    <a href="https://google.com" target="_blank">Google</a>
+  </nav>
+</div>
+
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const menu = document.getElementById('menuList');
+  const container = document.getElementById('topLeftMenu');
+
+  // ボタンで開閉
+  toggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    menu.classList.toggle('show');
+  });
+
+  // 外をクリックしたら閉じる
+  document.addEventListener('click', (e) => {
+    if(!container.contains(e.target)) {
+      menu.classList.remove('show');
+    }
+  });
+</script>
+
+<main style="padding:50px;">
+  <h1>テストページ</h1>
+  <p>「メニュー」を押すとリンクが順番にスライドして表示されます。</p>
+</main>
+
+</body>
+</html>
+

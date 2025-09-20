@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>シンプル掲示板（フェードイン）</title>
+  <style>
+    /* 全体のリセット */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;background:#ffffff}
+
+    /* ページ読み込み時に白→段々見える（フェードイン） */
+    body{
+      opacity:0; /* 最初は見えない */
+      animation:fadeInPage 900ms ease-out 200ms forwards;
+      background: #ffffff; /* 最初は白 */
+      color:#111;
+      -webkit-font-smoothing:antialiased;
+    }
+    @keyframes fadeInPage{
+      from{opacity:0}
+      to{opacity:1}
+    }
+    /* Respect user motion preferences */
+    @media (prefers-reduced-motion: reduce){
+      body{animation:none;opacity:1}
+    }
+
+    /* レイアウト */
+    .container{max-width:900px;margin:36px auto;padding:24px}
+    header{display:flex;align-items:center;gap:16px}
+    header h1{margin:0;font-size:1.6rem}
+    .board{margin-top:20px}
+
+    /* 投稿カード */
+    .post{background:#fff;border:1px solid #e7e7e7;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 6px 18px rgba(16,24,40,0.04)}
+    .post .meta{font-size:0.85rem;color:#666;margin-bottom:8px}
+    .post .title{font-weight:600;margin:0 0 6px 0}
+    .post .body{margin:0;color:#222;white-space:pre-wrap}
+
+    /* 投稿フォーム */
+    .new-post{margin-top:18px;background:#fafafa;padding:16px;border-radius:10px;border:1px dashed #eee}
+    .new-post label{display:block;font-size:0.9rem;margin-bottom:6px}
+    .new-post input[type=text], .new-post textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #ddd}
+    .new-post textarea{min-height:100px;resize:vertical}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:#2563eb;color:#fff;border:none;cursor:pointer;margin-top:8px}
+    .btn:active{transform:translateY(1px)}
+
+    /* 小さい画面向け */
+    @media (max-width:600px){
+      .container{padding:16px;margin:18px}
+      header h1{font-size:1.2rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden>
+        <rect width="24" height="24" rx="6" fill="#2563eb"></rect>
+        <path d="M7 8h10v2H7zM7 12h7v2H7z" fill="#fff"></path>
+      </svg>
+      <h1>できごと掲示板</h1>
+    </header>
+
+    <p>ここには出来事（イベント・お知らせ・メモ）を時系列で書き出します。下から新しい投稿を追加できます。</p>
+
+    <section class="board" id="board">
+      <!-- サンプル投稿 -->
+      <article class="post">
+        <div class="meta">2025-09-01 10:30</div>
+        <h2 class="title">防災訓練のお知らせ</h2>
+        <p class="body">9月10日（木）に防災訓練を行います。集合は9:00、中央広場にて。</p>
+      </article>
+
+      <article class="post">
+        <div class="meta">2025-08-20 18:00</div>
+        <h2 class="title">夏祭りフォトコンテスト結果発表</h2>
+        <p class="body">最優秀賞は田中さんの作品でした。おめでとうございます！参加者の皆さん、ありがとうございました。</p>
+      </article>
+    </section>
+
+    <section class="new-post" aria-labelledby="new-post-title">
+      <h3 id="new-post-title">新しい出来事を投稿</h3>
+      <form id="postForm">
+        <label>タイトル<input type="text" id="title" placeholder="タイトルを入力" required></label>
+        <label>内容<textarea id="body" placeholder="出来事の内容を入力" required></textarea></label>
+        <button class="btn" type="submit">投稿する</button>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // シンプルな投稿処理（本番ではサーバー保存が必要）
+    const form = document.getElementById('postForm');
+    const board = document.getElementById('board');
+
+    function nowString(){
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth()+1).padStart(2,'0');
+      const day = String(d.getDate()).padStart(2,'0');
+      const hh = String(d.getHours()).padStart(2,'0');
+      const mm = String(d.getMinutes()).padStart(2,'0');
+      return `${y}-${m}-${day} ${hh}:${mm}`;
+    }
+
+    form.addEventListener('submit', e =>{
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const body = document.getElementById('body').value.trim();
+      if(!title || !body) return;
+
+      const article = document.createElement('article');
+      article.className = 'post';
+      article.innerHTML = `\n        <div class="meta">${nowString()}</div>\n        <h2 class="title"></h2>\n        <p class="body"></p>\n      `;
+      article.querySelector('.title').textContent = title;
+      article.querySelector('.body').textContent = body;
+
+      // 先頭に追加（新しい投稿が上）
+      board.insertBefore(article, board.firstChild);
+
+      // フォームをクリア
+      form.reset();
+
+      // 簡単な視覚フィードバック（CSSでスムーズに現れる）
+      article.style.opacity = 0;
+      article.style.transition = 'opacity 400ms ease-out, transform 400ms ease-out';
+      article.style.transform = 'translateY(-6px)';
+      requestAnimationFrame(()=>{
+        article.style.opacity = 1;
+        article.style.transform = 'translateY(0)';
+      });
+    });
+  </script>
+</body>
+</html>

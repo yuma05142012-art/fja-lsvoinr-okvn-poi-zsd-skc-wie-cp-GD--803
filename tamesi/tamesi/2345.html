@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>シンプル掲示板（フェードイン）</title>
+  <style>
+    /* --- ページ全体のフェードイン（白い背景から段々見える） --- */
+    html,body{height:100%;margin:0}
+    body{
+      font-family: "Hiragino Kaku Gothic ProN", Meiryo, "Segoe UI", Arial, sans-serif;
+      background:#f6f8fa;
+      color:#111;
+      min-height:100%;
+      /* 最初は透明（見えない）にして、アニメーションで表示 */
+      opacity:0;
+      animation: pageFadeIn 1.2s ease forwards;
+    }
+
+    @keyframes pageFadeIn{
+      0%{background:#ffffff; opacity:0}
+      60%{background:#ffffff; opacity:0.6}
+      100%{background:#f6f8fa; opacity:1}
+    }
+
+    /* 中央のコンテナ */
+    .wrap{
+      max-width:900px;
+      margin:36px auto;
+      padding:20px;
+    }
+
+    header{
+      text-align:center;
+      margin-bottom:18px;
+    }
+    h1{margin:0 0 6px 0; font-size:1.6rem}
+    p.lead{margin:0;color:#555}
+
+    /* 投稿フォーム */
+    form.postBox{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      margin:18px 0 24px 0;
+      background: #fff;
+      border-radius:12px;
+      padding:12px;
+      box-shadow: 0 6px 18px rgba(20,30,50,0.06);
+    }
+    textarea#content{flex:1; min-height:72px; border:1px solid #e3e7ec; border-radius:8px; padding:8px; font-size:14px}
+    input[type="text"]#name{width:160px; padding:8px; border-radius:8px; border:1px solid #e3e7ec}
+    button{background:#0b76ff; color:white; border:none; padding:10px 14px; border-radius:10px; cursor:pointer}
+    button:active{transform:translateY(1px)}
+
+    /* 投稿リスト */
+    .list{display:flex; flex-direction:column; gap:12px}
+    .post{
+      background:#fff;
+      padding:12px 14px;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(20,30,50,0.05);
+      border-left:6px solid #0b76ff;
+      opacity:0; transform: translateY(8px);
+      animation: itemAppear 0.5s ease forwards;
+    }
+    @keyframes itemAppear{
+      to{opacity:1; transform:translateY(0)}
+    }
+    .meta{font-size:13px;color:#666;margin-bottom:6px}
+    .content{white-space:pre-wrap; font-size:15px}
+
+    /* フッター */
+    footer{margin-top:26px; text-align:center; color:#888; font-size:13px}
+
+    /* レスポンシブ */
+    @media (max-width:640px){
+      .wrap{padding:12px}
+      input[type="text"]#name{width:120px}
+      h1{font-size:1.2rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>出来事掲示板</h1>
+      <p class="lead">気軽に出来事を書き込めるシンプルな掲示板（ローカル保存）</p>
+    </header>
+
+    <form class="postBox" id="postForm">
+      <input id="name" type="text" placeholder="名前（任意）" maxlength="40">
+      <textarea id="content" placeholder="出来事を書いてください..." required></textarea>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button type="submit">投稿</button>
+        <button type="button" id="clearBtn" style="background:#ff6b6b">全消去</button>
+      </div>
+    </form>
+
+    <section class="list" id="posts"></section>
+
+    <footer>（この掲示板はブラウザのローカルストレージに保存されます。他の人と共有するにはHTMLファイルをサーバーにアップしてください）</footer>
+  </div>
+
+  <script>
+    // localStorageキー
+    const STORAGE_KEY = 'simple-events-board-v1';
+
+    // 初期サンプル投稿（最初だけ表示される）
+    const sample = [
+      {name:'運営', content:'この掲示板へようこそ！右のフォームから出来事を書き込めます。', time: Date.now()-1000*60*60*24},
+      {name:'太郎', content:'2025-09-16：テスト投稿です。', time: Date.now()-1000*60*60}
+    ];
+
+    const postsEl = document.getElementById('posts');
+    const form = document.getElementById('postForm');
+    const nameEl = document.getElementById('name');
+    const contentEl = document.getElementById('content');
+    const clearBtn = document.getElementById('clearBtn');
+
+    function loadPosts(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sample));
+        return sample.slice();
+      }
+      try{ return JSON.parse(raw) }catch(e){return []}
+    }
+
+    function savePosts(arr){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    function timeToString(ms){
+      const d = new Date(ms);
+      // 例: 2025-09-17 15:22
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0') + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+    }
+
+    function render(){
+      postsEl.innerHTML='';
+      const arr = loadPosts();
+      // 最新順に表示
+      arr.slice().reverse().forEach((p,idx)=>{
+        const el = document.createElement('article');
+        el.className='post';
+        // 少し遅延をつけて順にフェードインさせる
+        el.style.animationDelay = (idx*80)+'ms';
+        el.innerHTML = `<div class="meta">${escapeHtml(p.name||'名無し')} — ${timeToString(p.time)}</div>` +
+                       `<div class="content">${escapeHtml(p.content)}</div>`;
+        postsEl.appendChild(el);
+      });
+    }
+
+    function escapeHtml(s){
+      if(!s && s!==0) return '';
+      return String(s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c];
+      });
+    }
+
+    form.addEventListener('submit', e=>{
+      e.preventDefault();
+      const name = nameEl.value.trim();
+      const content = contentEl.value.trim();
+      if(!content) return;
+      const arr = loadPosts();
+      arr.push({name: name || '名無し', content, time: Date.now()});
+      savePosts(arr);
+      contentEl.value='';
+      render();
+    });
+
+    clearBtn.addEventListener('click', ()=>{
+      if(!confirm('本当に全ての投稿を消しますか？（ローカル保存のデータを削除します）')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      render();
+    });
+
+    // 初回表示
+    render();
+  </script>
+</body>
+</html>

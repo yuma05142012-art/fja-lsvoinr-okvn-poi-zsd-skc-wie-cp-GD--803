@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>円グラフ</title>
+  <link rel="stylesheet" href="gakkouengurafu.css">
+</head>
+<body>
+  <div class="circle-container">
+    <div class="circle" data-percent="42" data-color="#2196f3">
+      <svg>
+        <circle class="bg" cx="60" cy="60" r="50"></circle>
+        <circle class="progress" cx="60" cy="60" r="50"></circle>
+      </svg>
+      <div class="number">42%</div>
+      <p>男子の恋愛興味度</p>
+    </div>
+
+    <div class="circle" data-percent="83" data-color="#e91e63">
+      <svg>
+        <circle class="bg" cx="60" cy="60" r="50"></circle>
+        <circle class="progress" cx="60" cy="60" r="50"></circle>
+      </svg>
+      <div class="number">83%</div>
+      <p>女子の恋愛興味度</p>
+    </div>
+
+    <div class="circle" data-percent="22" data-color="#4caf50">
+      <svg>
+        <circle class="bg" cx="60" cy="60" r="50"></circle>
+        <circle class="progress" cx="60" cy="60" r="50"></circle>
+      </svg>
+      <div class="number">22%</div>
+      <p>彼氏や彼女がいる人　元カノ元カレがいた人</p>
+    </div>
+  </div>
+
+  
+  <script>
+    // アニメーション設定
+    document.querySelectorAll(".circle").forEach(circle => {
+      let percent = circle.getAttribute("data-percent");
+      let color = circle.getAttribute("data-color");
+      let progress = circle.querySelector(".progress");
+      let radius = progress.getAttribute("r");
+      let circumference = 2 * Math.PI * radius;
+
+      progress.style.stroke = color;
+      progress.style.strokeDasharray = circumference;
+      progress.style.strokeDashoffset = circumference;
+
+      setTimeout(() => {
+        progress.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+      }, 300);
+    });
+  </script>
+</body>
+</html>
