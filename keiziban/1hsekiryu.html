@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>パスワード認証</title>
+  <link rel="stylesheet" href="fghik.css">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f4f4f4;
+      max-width: 500px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 6vw;
+      margin-bottom: 20px;
+    }
+    #lockedUI, #unlockedUI {
+      margin-top: 30px;
+    }
+    .hidden {
+      display: none;
+    }
+    .digits {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .digit {
+      width: 40px;
+      height: 40px;
+      margin: 5px;
+      border-radius: 50%;
+      border: 2px solid #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #333;
+    }
+    .empty {
+      background: none !important;
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      justify-content: center;
+      max-width: 320px;
+      margin: auto;
+    }
+    button {
+      font-size: 6vw;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: #ddd;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 4vw;
+    }
+    .message.err {
+      color: red;
+    }
+    .message.ok {
+      color: green;
+    }
+
+    /* スマホ小さい画面用 */
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 7vw;
+      }
+      .digit {
+        width: 12vw;
+        height: 12vw;
+      }
+      .dot {
+        width: 5vw;
+        height: 5vw;
+      }
+      button {
+        font-size: 8vw;
+        padding: 12px;
+      }
+      .message {
+        font-size: 5vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>パスワード入力</h1>
+
+  <div id="lockedUI">
+    <div class="digits">
+      <div class="digit"><div class="dot empty" id="d0"></div></div>
+      <div class="digit"><div class="dot empty" id="d1"></div></div>
+      <div class="digit"><div class="dot empty" id="d2"></div></div>
+      <div class="digit"><div class="dot empty" id="d3"></div></div>
+    </div>
+    <div class="keypad">
+      <button class="key" data-num="1">1</button>
+      <button class="key" data-num="2">2</button>
+      <button class="key" data-num="3">3</button>
+      <button class="key" data-num="4">4</button>
+      <button class="key" data-num="5">5</button>
+      <button class="key" data-num="6">6</button>
+      <button class="key" data-num="7">7</button>
+      <button class="key" data-num="8">8</button>
+      <button class="key" data-num="9">9</button>
+      <button id="clear">C</button>
+      <button class="key" data-num="0">0</button>
+      <button id="back">←</button>
+    </div>
+    <div id="message" class="message"></div>
+  </div>
+
+  <div id="unlockedUI" class="hidden">
+    <h2>🔓 コンテンツ解放！</h2>
+    <p><a href="../1H.html" class="big-link">ここを押してください</a></p>
+    <button id="lockAgain">再ロック</button>
+  </div>
+
+  <script>
+    const CORRECT = '9274';     // 正しいパスワード
+    const SS_KEY = 'pageUnlocked';
+    const FAIL_KEY = 'failCount';
+    const LOCK_KEY = 'lockUntil';
+    const LOCK_TIME = 10 * 60 * 1000; // 3分
+    const MAX_FAILS = 5;
+
+    let input = '';
+
+    const digits = ["d0","d1","d2","d3"].map(id => document.getElementById(id));
+    const msg = document.getElementById('message');
+    const keys = document.querySelectorAll('button.key');
+    const back = document.getElementById('back');
+    const clear = document.getElementById('clear');
+    const lockedUI = document.getElementById('lockedUI');
+    const unlockedUI = document.getElementById('unlockedUI');
+    const lockAgain = document.getElementById('lockAgain');
+
+    function updateDisplay(){
+      for(let i=0;i<4;i++){
+        const el = digits[i];
+        el.classList.toggle('empty', i>=input.length);
+      }
+    }
+
+    function showUnlockedUI(){
+      lockedUI.classList.add('hidden');
+      unlockedUI.classList.remove('hidden');
+    }
+    function showLockedUI(){
+      lockedUI.classList.remove('hidden');
+      unlockedUI.classList.add('hidden');
+    }
+
+    function disableInput(disabled){
+      keys.forEach(k=>k.disabled=disabled);
+      back.disabled=disabled;
+      clear.disabled=disabled;
+    }
+
+    function checkLock(){
+      const until = parseInt(sessionStorage.getItem(LOCK_KEY)||'0');
+      if(until && Date.now()<until){
+        const remain = Math.ceil((until-Date.now())/1000);
+        msg.textContent = `ロック中です。あと${remain}秒待ってください`;
+        msg.className = 'message err';
+        disableInput(true);
+        setTimeout(checkLock,1000);
+        return true;
+      } else {
+        sessionStorage.removeItem(LOCK_KEY);
+        disableInput(false);
+        return false;
+      }
+    }
+
+    function check(){
+      if(checkLock()) return;
+      if(input === CORRECT){
+        msg.textContent = '正解！ ロック解除しました';
+        msg.className = 'message ok';
+        sessionStorage.setItem(SS_KEY,'true');
+        sessionStorage.removeItem(FAIL_KEY);
+        setTimeout(()=>showUnlockedUI(),400);
+      } else {
+        let fails = parseInt(sessionStorage.getItem(FAIL_KEY)||'0')+1;
+        sessionStorage.setItem(FAIL_KEY,fails);
+        if(fails>=MAX_FAILS){
+          const until = Date.now()+LOCK_TIME;
+          sessionStorage.setItem(LOCK_KEY,until);
+          msg.textContent = `5回間違えました。3分間ロックされます`;
+          msg.className = 'message err';
+          disableInput(true);
+          checkLock();
+        } else {
+          const remaining = MAX_FAILS - fails;
+          msg.textContent = `不正なパスワードです。残り${remaining}回`;
+          msg.className = 'message err';
+          setTimeout(()=>{input='';updateDisplay();},600);
+        }
+      }
+    }
+
+    keys.forEach(k=>{
+      k.addEventListener('click',()=>{
+        if(input.length>=4) return;
+        input+=k.dataset.num;
+        updateDisplay();
+        if(input.length===4) check();
+      });
+    });
+
+    back.addEventListener('click',()=>{ input=input.slice(0,-1);updateDisplay(); });
+    clear.addEventListener('click',()=>{ input='';updateDisplay(); });
+
+    lockAgain.addEventListener('click',()=>{
+      sessionStorage.removeItem(SS_KEY);
+      sessionStorage.removeItem(FAIL_KEY);
+      sessionStorage.removeItem(LOCK_KEY);
+      input='';updateDisplay();showLockedUI();
+    });
+
+    window.addEventListener('load',()=>{
+      if(sessionStorage.getItem(SS_KEY)==='true'){ showUnlockedUI(); }
+      else{ showLockedUI(); checkLock(); }
+      updateDisplay();
+    });
+  </script>
+</body>
+</html>
