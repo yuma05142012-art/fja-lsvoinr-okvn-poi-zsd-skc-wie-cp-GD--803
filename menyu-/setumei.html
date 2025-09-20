@@ -81,5 +81,21 @@
   <footer>
     © 2025 MySite
   </footer>
+
+  <script>
+    // スクロール時に要素が見えたらクラスを付与
+    const sections = document.querySelectorAll("section");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+          observer.unobserve(entry.target); // 一度表示したら監視を外す
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(sec => observer.observe(sec));
+  </script>
 </body>
 </html>
