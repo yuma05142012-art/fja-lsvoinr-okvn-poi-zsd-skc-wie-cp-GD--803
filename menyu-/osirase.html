@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お知らせ</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Hiragino Sans", sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #4a90e2, #357ab8);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 0 15px;
+    }
+
+    .notice {
+      background: #fff;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .notice:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .notice-header {
+      background: #4a90e2;
+      color: #fff;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+    }
+
+    .notice-content {
+      padding: 15px;
+    }
+
+    .notice-content h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: #222;
+    }
+
+    .notice-content p {
+      margin: 0;
+      line-height: 1.6;
+    }
+  </style>
+  <style>
+    .center-link {
+      display: block;          /* aタグをブロック要素にする */
+      text-align: center;      /* 中央寄せ */
+      margin: 20px 0;          /* 上下に余白 */
+    }
+
+    .center-link a {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #4a90e2;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>お知らせ</h1>
+  </header>
+
+  <div class="container">
+    <div class="notice">
+      <div class="notice-header">2025年9月21日</div>
+      <div class="notice-content">
+        <h2>サイトリニューアルのお知らせ</h2>
+        <p>デザインを一新し、より快適にご利用いただけるようになりました。</p>
+      </div>
+    </div>
+
+    <div class="notice">
+      <div class="notice-header">2025年9月15日</div>
+      <div class="notice-content">
+        <h2>システムメンテナンスのお知らせ</h2>
+        <p>9月20日 2:00〜4:00 の間、メンテナンスのためサービスが一時停止いたします。</p>
+      </div>
+    </div>
+
+    <div class="notice">
+      <div class="notice-header">2025年9月1日</div>
+      <div class="notice-content">
+        <h2>新機能を追加しました</h2>
+        <p>検索機能が追加され、必要な情報をすぐに探せるようになりました。</p>
+      </div>
+    </div>
+  </div>
+  <div class="center-link">
+  <a href="../1hmatome/matome.html">元のページに行きたい場合はここを押す</a>
+  </div>
+</body>
+</html>
