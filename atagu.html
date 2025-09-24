@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>ボタンリンク例</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center; /* 横方向センタリング */
+      align-items: center;     /* 縦方向センタリング */
+      height: 100vh;           /* 画面いっぱいにする */
+      background: #f0f0f0;     /* 背景色 */
+      font-family: sans-serif;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 15px 40px;
+      background-color: #007BFF;  /* ボタン色（青） */
+      color: white;
+      text-decoration: none;      /* 下線消す */
+      font-size: 1.2rem;
+      border-radius: 8px;         /* 角丸 */
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* 影 */
+      transition: all 0.2s ease;  /* ホバーアニメーション */
+    }
+
+    a.button:hover {
+      background-color: #0056b3;  /* ホバー時に濃くする */
+      transform: scale(1.05);     /* 少し拡大 */
+    }
+
+    a.button:active {
+      transform: scale(0.95);     /* 押した時に縮む */
+    }
+  </style>
+</head>
+<body>
+  <a href="../dousisya/1hmatome/matome.html" class="button">次のページへ</a>
+</body>
+</html>
