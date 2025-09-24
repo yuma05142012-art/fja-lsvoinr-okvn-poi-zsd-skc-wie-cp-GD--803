@@ -79,3 +79,18 @@ body {
     }
   }
   
+/* 文字を大きくするだけ */
+a {
+  font-size: 2rem;  /* remは相対的な大きさ。2rem = 約32px */
+}
+
+/* ボタンっぽく大きくしたい場合 */
+a.big-link {
+  font-size: 2rem;      /* 文字を大きく */
+  padding: 20px 40px;   /* 余白を追加 */
+  display: inline-block;/* クリック範囲を広げる */
+  text-decoration: none;
+  background: #007BFF;  /* 背景色 */
+  color: white;         /* 文字色 */
+  border-radius: 8px;   /* 角を丸くする */
+}
