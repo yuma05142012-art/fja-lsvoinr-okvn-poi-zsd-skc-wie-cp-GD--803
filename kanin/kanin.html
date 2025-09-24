@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>会員制ログイン</title>
+<base href="https://yuma05142012-art.github.io/fja-lsvoinr-okvn-poi-zsd-skc-wie-cp-GD--803/">
+<style>
+  body{font-family:sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f5f7fb;}
+  .card{width:420px;max-width:100%;background:#fff;padding:22px;border-radius:14px;box-shadow:0 8px 30px rgba(20,30,60,0.06);}
+  h1{font-size:18px;margin:0 0 8px;}
+  .btn{padding:10px 16px;border-radius:8px;border:1px solid #ddd;background:#fafafa;font-size:16px;cursor:pointer;}
+  .error{color:#c00;font-size:13px;height:18px;}
+  input{font-size:18px;padding:8px;border-radius:8px;border:1px solid #ddd;width:100%;box-sizing:border-box;}
+  input[name="memberNo"]{text-align:center;letter-spacing:6px;font-size:22px;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>会員番号と名前を入力してください</h1>
+    <p style="font-size:13px;color:#666;">会員番号は6桁の数字です。</p>
+
+    <div style="margin-bottom:8px;">
+      <div>会員番号（6桁）</div>
+      <input id="memberInput" name="memberNo" type="password" inputmode="numeric" maxlength="6" placeholder="●●●●●●">
+    </div>
+    <div style="margin-bottom:8px;">
+      <div>名前</div>
+      <input id="nameInput" type="text" maxlength="40" placeholder="例: 山田 太郎">
+    </div>
+
+    <button id="submitBtn" class="btn">送信</button>
+    <div class="error" id="errorMsg"></div>
+  </div>
+
+<script>
+  // 会員番号・名前・専用ページURLを定義
+  const VALID_MEMBERS = [
+    { no: "352896", name: "萩原悠理", url: "hagihara.html" },
+    { no: "296836", name: "テスト太郎", url: "page2.html" },
+    { no: "246810", name: "Sato Hanako", url: "page3.html" },
+    { no: "111111", name: "山田太郎", url: "page4.html" }
+    // ここに30人分まで追加 { no: "xxxxxx", name: "名前", url: "pageX.html" }
+  ];
+
+  const memberInput = document.getElementById("memberInput");
+  const nameInput = document.getElementById("nameInput");
+  const submitBtn = document.getElementById("submitBtn");
+  const errorMsg = document.getElementById("errorMsg");
+
+  function submitMember(){
+    const memberNo = memberInput.value.trim();
+    const nameRaw = nameInput.value.trim();
+
+    if(!/^\d{6}$/.test(memberNo)){ 
+      errorMsg.textContent="会員番号は6桁の数字で入力してください。"; 
+      return; 
+    }
+    if(nameRaw.length === 0){ 
+      errorMsg.textContent="名前を入力してください。"; 
+      return; 
+    }
+
+    const matched = VALID_MEMBERS.find(m=>{
+      return m.no === memberNo && m.name === nameRaw;
+    });
+
+    if(matched){
+      // 認証成功 → 専用ページへジャンプ
+      window.location.href = matched.url;
+    } else {
+      errorMsg.textContent = "会員番号と名前の組み合わせが一致しません。";
+    }
+  }
+
+  submitBtn.addEventListener("click", submitMember);
+</script>
+</body>
+</html>
