@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>女子四天王</title>
+<style>
+  body {
+    margin:0;
+    font-family:"Noto Sans JP", sans-serif;
+    background:#0f1724;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:40px 20px;
+    min-height:100vh;
+  }
+
+  h1 {
+    font-size:2rem;
+    margin-bottom:30px;
+    color:#fff;
+    text-shadow:0 0 12px rgba(0,0,0,0.8);
+  }
+
+  .list {
+    width:100%;
+    max-width:700px;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .member {
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:15px 20px;
+    border-radius:15px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.5);
+    opacity:0;
+    transform:translateY(120px); /* 下からスタート */
+    font-weight:600;
+    text-shadow:0 1px 3px rgba(255,255,255,0.6);
+  }
+
+  .photo {
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    overflow:hidden;
+    flex-shrink:0;
+    border:3px solid #fff;
+  }
+  .photo img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .info {
+    display:flex;
+    flex-direction:column;
+  }
+  .name {
+    font-size:1.2rem;
+    font-weight:700;
+  }
+  .desc {
+    font-size:0.9rem;
+  }
+
+  /* 色分け＋文字色 */
+  .gold   { background:linear-gradient(135deg,#ffd700,#ffec9c); color:#111; }
+  .silver { background:linear-gradient(135deg,#c0c0c0,#f0f0f0); color:#111; }
+  .bronze { background:linear-gradient(135deg,#cd7f32,#f6b68b); color:#111; }
+  .rainbow { 
+    background:linear-gradient(90deg, red,orange,yellow,green,blue,indigo,violet);
+    color:#fff; /* 文字白固定 */
+    text-shadow:0 2px 5px rgba(0,0,0,0.7);
+  }
+
+  /* 下から上へのスライドアニメーション */
+  @keyframes slideUp {
+    0%   { opacity:0; transform:translateY(120px); }
+    60%  { opacity:1; transform:translateY(-10px); }
+    100% { opacity:1; transform:translateY(0); }
+  }
+  .member.show {
+    animation:slideUp 1.2s ease-out forwards;
+  }
+
+  .rank {
+    font-size:1.3rem;
+    font-weight:900;
+    margin-right:10px;
+  }
+</style>
+</head>
+<body>
+  <h1>女子四天王</h1>
+  <div class="list">
+    <div class="member gold">
+      <div class="rank">1位</div>
+      <div class="photo"><img src="photo1.jpg" alt="山本 花"></div>
+      <div class="info">
+        <div class="name">山本 花</div>
+        <div class="desc">クラスのリーダー的存在で頼れる存在</div>
+      </div>
+    </div>
+    <div class="member silver">
+      <div class="rank">2位</div>
+      <div class="photo"><img src="photo2.jpg" alt="佐藤 愛"></div>
+      <div class="info">
+        <div class="name">佐藤 愛</div>
+        <div class="desc">明るくて誰とでも仲良くなれるムードメーカー</div>
+      </div>
+    </div>
+    <div class="member bronze">
+      <div class="rank">3位</div>
+      <div class="photo"><img src="photo3.jpg" alt="伊藤 結"></div>
+      <div class="info">
+        <div class="name">伊藤 結</div>
+        <div class="desc">勉強もスポーツも万能な努力家</div>
+      </div>
+    </div>
+    <div class="member rainbow">
+      <div class="rank">4位</div>
+      <div class="photo"><img src="photo4.jpg" alt="高橋 真"></div>
+      <div class="info">
+        <div class="name">高橋 真</div>
+        <div class="desc">独特のセンスでみんなを惹きつける個性派</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // 4位→1位の順に下から登場
+  window.addEventListener("DOMContentLoaded", () => {
+    const members = Array.from(document.querySelectorAll(".member")).reverse();
+    members.forEach((m, i) => {
+      setTimeout(() => {
+        m.classList.add("show");
+      }, i * 1200); // 1.2秒間隔
+    });
+  });
+</script>
+</body>
+</html>
