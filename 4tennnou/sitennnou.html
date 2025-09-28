@@ -97,43 +97,65 @@
     margin-right:10px;
   }
 </style>
+<style>
+  .back-button {
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#1e40af;
+    color:#fff;
+    padding:10px 15px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:700;
+    box-shadow:0 4px 8px rgba(0,0,0,0.3);
+    z-index:1000;
+    transition:all 0.2s ease;
+  }
+  .back-button:hover {
+    background:#2563eb;
+  }
+</style>
 </head>
 <body>
+  <a href="javascript:history.back()" class="back-button">← 前のページに戻る</a>
   <h1>女子四天王</h1>
+  <h3>このクラスの権力トップ４と考えてもらったらいいです</h3>
   <div class="list">
     <div class="member gold">
       <div class="rank">1位</div>
-      <div class="photo"><img src="photo1.jpg" alt="山本 花"></div>
+      <div class="photo"><img src="../img/25okuno.png" alt=""></div>
       <div class="info">
-        <div class="name">山本 花</div>
-        <div class="desc">クラスのリーダー的存在で頼れる存在</div>
+        <div class="name">奧野 唄</div>
+        <div class="desc">クラスの総監督と言われる存在・敵に回してはいけない人ランキング1位</div>
       </div>
     </div>
     <div class="member silver">
       <div class="rank">2位</div>
-      <div class="photo"><img src="photo2.jpg" alt="佐藤 愛"></div>
+      <div class="photo"><img src="../img/14konndou.png" alt=""></div>
       <div class="info">
-        <div class="name">佐藤 愛</div>
-        <div class="desc">明るくて誰とでも仲良くなれるムードメーカー</div>
+        <div class="name">近藤 美結</div>
+        <div class="desc">表向きはとてもいい人あが、裏は怖い・一軍女子のトップ２</div>
       </div>
     </div>
     <div class="member bronze">
       <div class="rank">3位</div>
-      <div class="photo"><img src="photo3.jpg" alt="伊藤 結"></div>
+      <div class="photo"><img src="../img/29sueyosi.png" alt=""></div>
       <div class="info">
-        <div class="name">伊藤 結</div>
-        <div class="desc">勉強もスポーツも万能な努力家</div>
+        <div class="name">末吉 穂野香</div>
+        <div class="desc">一軍女子のトップ・この人を敵にすると一軍女子全員を敵にすると同じ</div>
       </div>
     </div>
     <div class="member rainbow">
       <div class="rank">4位</div>
-      <div class="photo"><img src="photo4.jpg" alt="高橋 真"></div>
+      <div class="photo"><img src="../img/35tamada.png" alt=""></div>
       <div class="info">
-        <div class="name">高橋 真</div>
-        <div class="desc">独特のセンスでみんなを惹きつける個性派</div>
+        <div class="name">玉田 絵里子</div>
+        <div class="desc">一軍女子のトップ３・男子と全く関わらない為、謎が多い人（男子目線）</div>
       </div>
     </div>
   </div>
+ 
 
 <script>
   // 4位→1位の順に下から登場
