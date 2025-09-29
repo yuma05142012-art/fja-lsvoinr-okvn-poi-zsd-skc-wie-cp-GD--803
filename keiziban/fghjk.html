@@ -1,249 +1,192 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>パスワード認証</title>
-  <link rel="stylesheet" href="fghik.css">
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-      text-align: center;
-      padding: 20px;
-      background: #f4f4f4;
-      max-width: 500px;
-      margin: auto;
-    }
-    h1 {
-      font-size: 6vw;
-      margin-bottom: 20px;
-    }
-    #lockedUI, #unlockedUI {
-      margin-top: 30px;
-    }
-    .hidden {
-      display: none;
-    }
-    .digits {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .digit {
-      width: 40px;
-      height: 40px;
-      margin: 5px;
-      border-radius: 50%;
-      border: 2px solid #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .dot {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #333;
-    }
-    .empty {
-      background: none !important;
-    }
-    .keypad {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      justify-content: center;
-      max-width: 320px;
-      margin: auto;
-    }
-    button {
-      font-size: 6vw;
-      padding: 15px;
-      border: none;
-      border-radius: 12px;
-      background: #ddd;
-      cursor: pointer;
-    }
-    button:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-    .message {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 4vw;
-    }
-    .message.err {
-      color: red;
-    }
-    .message.ok {
-      color: green;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>パスワードロック</title>
+<style>
+  a.big-link {
+    font-size: 2rem;      /* 文字サイズを大きく */
+    padding: 20px 40px;   /* 余白をつけてボタン風に */
+    display: inline-block;/* ブロックっぽくしてクリック範囲を広げる */
+    text-decoration: none;/* 下線を消す */
+    background: #007BFF;  /* 背景色（青） */
+    color: white;         /* 文字色 */
+    border-radius: 8px;   /* 角を丸める */
+  }
 
-    /* スマホ小さい画面用 */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 7vw;
-      }
-      .digit {
-        width: 12vw;
-        height: 12vw;
-      }
-      .dot {
-        width: 5vw;
-        height: 5vw;
-      }
-      button {
-        font-size: 8vw;
-        padding: 12px;
-      }
-      .message {
-        font-size: 5vw;
-      }
-    }
-  </style>
+  a.big-link:hover {
+    background: #0056b3;  /* ホバー時に少し濃い青に */
+  }
+</style>
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f0f0f0;
+}
+#lockScreen, #protected { text-align: center; }
+#protected { display: none; }
+#inputDisplay { font-size: 2rem; margin-bottom: 15px; letter-spacing: 5px; }
+#message { color: red; margin-top: 10px; }
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+button {
+  font-size: 1.5rem;
+  padding: 15px;
+  border: none;
+  border-radius: 50%;
+  background: #3498db;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: transform 0.1s, background 0.1s;
+}
+
+button:active {
+  background: #2980b9;
+  transform: translateY(2px);
+}
+
+/* 下段ボタン配置 */
+.button-zero { grid-column: 2; }
+.button-clear { grid-column: 1; }
+.button-back { grid-column: 3; }
+
+/* iPhone対応 */
+@media (max-width: 480px) {
+  .keypad { grid-template-columns: repeat(3, 60px); gap: 8px; }
+  button { font-size: 1.2rem; padding: 12px; }
+  #inputDisplay { font-size: 1.5rem; }
+}
+</style>
 </head>
 <body>
-  <h1>パスワード入力</h1>
-
-  <div id="lockedUI">
-    <div class="digits">
-      <div class="digit"><div class="dot empty" id="d0"></div></div>
-      <div class="digit"><div class="dot empty" id="d1"></div></div>
-      <div class="digit"><div class="dot empty" id="d2"></div></div>
-      <div class="digit"><div class="dot empty" id="d3"></div></div>
-    </div>
-    <div class="keypad">
-      <button class="key" data-num="1">1</button>
-      <button class="key" data-num="2">2</button>
-      <button class="key" data-num="3">3</button>
-      <button class="key" data-num="4">4</button>
-      <button class="key" data-num="5">5</button>
-      <button class="key" data-num="6">6</button>
-      <button class="key" data-num="7">7</button>
-      <button class="key" data-num="8">8</button>
-      <button class="key" data-num="9">9</button>
-      <button id="clear">C</button>
-      <button class="key" data-num="0">0</button>
-      <button id="back">←</button>
-    </div>
-    <div id="message" class="message"></div>
+<div id="lockScreen">
+  <h2>4桁のパスワードを入力してください</h2>
+  <div id="inputDisplay">----</div>
+  <div class="keypad">
+    <button>1</button><button>2</button><button>3</button>
+    <button>4</button><button>5</button><button>6</button>
+    <button>7</button><button>8</button><button>9</button>
+    <button class="button-clear">C</button>
+    <button class="button-zero">0</button>
+    <button class="button-back">⌫</button>
   </div>
+  <div id="message"></div>
+</div>
 
-  <div id="unlockedUI" class="hidden">
-    <h2>🔓 コンテンツ解放！</h2>
-    <p><a href="gh.html" class="big-link">ここを押してください</a></p>
-    <button id="lockAgain">再ロック</button>
-  </div>
+<div id="protected">
+  <h1>🎉 ロック解除されました！</h1>
+  <p><a href="../keiziban/gh.html" class="big-link">ここを押す</a></p>
+</div>
 
-  <script>
-    const CORRECT = '9274';     // 正しいパスワード
-    const SS_KEY = 'pageUnlocked';
-    const FAIL_KEY = 'failCount';
-    const LOCK_KEY = 'lockUntil';
-    const LOCK_TIME = 10 * 60 * 1000; // 3分
-    const MAX_FAILS = 5;
+<script>
+const CORRECT = "9274";
+let input = "";
+const display = document.getElementById("inputDisplay");
+const message = document.getElementById("message");
 
-    let input = '';
+// sessionStorageで状態保持
+function getFailed() { return parseInt(sessionStorage.getItem("failedAttempts")||"0"); }
+function setFailed(val) { sessionStorage.setItem("failedAttempts", val); }
+function getWrong() { return parseInt(sessionStorage.getItem("wrongCount")||"0"); }
+function setWrong(val) { sessionStorage.setItem("wrongCount", val); }
+function getLockUntil() { return parseInt(sessionStorage.getItem("lockUntil")||"0"); }
+function setLockUntil(val) { sessionStorage.setItem("lockUntil", val); }
+function isAuthenticated() { return sessionStorage.getItem("authenticated")==="true"; }
+function setAuthenticated(val) { sessionStorage.setItem("authenticated", val?"true":"false"); }
 
-    const digits = ["d0","d1","d2","d3"].map(id => document.getElementById(id));
-    const msg = document.getElementById('message');
-    const keys = document.querySelectorAll('button.key');
-    const back = document.getElementById('back');
-    const clear = document.getElementById('clear');
-    const lockedUI = document.getElementById('lockedUI');
-    const unlockedUI = document.getElementById('unlockedUI');
-    const lockAgain = document.getElementById('lockAgain');
+function updateDisplay() { display.textContent = input.padEnd(4,"-"); }
+function lockScreenShow() { document.getElementById("lockScreen").style.display="block"; document.getElementById("protected").style.display="none"; }
+function unlockScreenShow() { document.getElementById("lockScreen").style.display="none"; document.getElementById("protected").style.display="block"; }
 
-    function updateDisplay(){
-      for(let i=0;i<4;i++){
-        const el = digits[i];
-        el.classList.toggle('empty', i>=input.length);
-      }
+function checkLock() {
+  const lockUntil = getLockUntil();
+  if(Date.now() < lockUntil){
+    const remainSec = Math.ceil((lockUntil - Date.now())/1000);
+    const min = Math.floor(remainSec/60); const sec = remainSec%60;
+    message.textContent = `ロック中です。あと${min}分${sec}秒`;
+    return true;
+  }
+  return false;
+}
+
+// ボタン処理
+document.querySelectorAll(".keypad button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    if(checkLock()) return;
+    const val = btn.textContent;
+    if(val >= "0" && val <= "9" && input.length<4){ 
+      input+=val; updateDisplay();
+      if(input.length===4) checkPassword();
+    } else if(val==="C"){ // 一気消去
+      input=""; updateDisplay(); message.textContent="";
+    } else if(val==="⌫"){ // 一桁消去
+      input=input.slice(0,-1); updateDisplay();
     }
+  });
+});
 
-    function showUnlockedUI(){
-      lockedUI.classList.add('hidden');
-      unlockedUI.classList.remove('hidden');
+function checkPassword(){
+  if(input===CORRECT){
+    setAuthenticated(true); setFailed(0); setWrong(0); setLockUntil(0);
+    unlockScreenShow(); input=""; updateDisplay();
+  }else{
+    let wrong=getWrong()+1; setWrong(wrong);
+    let failed=getFailed();
+    if(wrong>=5){
+      failed++; setFailed(failed);
+      const extra=failed*10*60*1000;
+      setLockUntil(Date.now()+extra); setWrong(0);
+      input=""; updateDisplay();
+      message.textContent=`5回間違えました。${extra/60000}分後に再入力可能`;
+      startCountdown();
+    }else{
+      message.textContent=`パスワードが違います。残り ${5-wrong} 回`;
+      input=""; updateDisplay();
     }
-    function showLockedUI(){
-      lockedUI.classList.remove('hidden');
-      unlockedUI.classList.add('hidden');
-    }
+  }
+}
 
-    function disableInput(disabled){
-      keys.forEach(k=>k.disabled=disabled);
-      back.disabled=disabled;
-      clear.disabled=disabled;
-    }
+let countdownInterval=null;
+function startCountdown(){
+  if(countdownInterval) return;
+  countdownInterval=setInterval(()=>{
+    if(!checkLock()){ clearInterval(countdownInterval); countdownInterval=null; message.textContent=""; }
+  },1000);
+}
 
-    function checkLock(){
-      const until = parseInt(sessionStorage.getItem(LOCK_KEY)||'0');
-      if(until && Date.now()<until){
-        const remain = Math.ceil((until-Date.now())/1000);
-        msg.textContent = `ロック中です。あと${remain}秒待ってください`;
-        msg.className = 'message err';
-        disableInput(true);
-        setTimeout(checkLock,1000);
-        return true;
-      } else {
-        sessionStorage.removeItem(LOCK_KEY);
-        disableInput(false);
-        return false;
-      }
-    }
+// ページロード後に初回だけ認証フラグ保持
+let firstLoad = true;
 
-    function check(){
-      if(checkLock()) return;
-      if(input === CORRECT){
-        msg.textContent = '正解！ ロック解除しました';
-        msg.className = 'message ok';
-        sessionStorage.setItem(SS_KEY,'true');
-        sessionStorage.removeItem(FAIL_KEY);
-        setTimeout(()=>showUnlockedUI(),400);
-      } else {
-        let fails = parseInt(sessionStorage.getItem(FAIL_KEY)||'0')+1;
-        sessionStorage.setItem(FAIL_KEY,fails);
-        if(fails>=MAX_FAILS){
-          const until = Date.now()+LOCK_TIME;
-          sessionStorage.setItem(LOCK_KEY,until);
-          msg.textContent = `5回間違えました。3分間ロックされます`;
-          msg.className = 'message err';
-          disableInput(true);
-          checkLock();
-        } else {
-          const remaining = MAX_FAILS - fails;
-          msg.textContent = `不正なパスワードです。残り${remaining}回`;
-          msg.className = 'message err';
-          setTimeout(()=>{input='';updateDisplay();},600);
-        }
-      }
-    }
+// ブラウザ離脱で再ロック（初回ロード時は無視）
+document.addEventListener("visibilitychange", ()=>{
+  if(firstLoad){ firstLoad=false; return; } 
+  if(document.hidden && isAuthenticated()){ 
+    setAuthenticated(false); 
+    lockScreenShow(); 
+    message.textContent="再度パスワードを入力してください"; 
+  }
+});
 
-    keys.forEach(k=>{
-      k.addEventListener('click',()=>{
-        if(input.length>=4) return;
-        input+=k.dataset.num;
-        updateDisplay();
-        if(input.length===4) check();
-      });
-    });
-
-    back.addEventListener('click',()=>{ input=input.slice(0,-1);updateDisplay(); });
-    clear.addEventListener('click',()=>{ input='';updateDisplay(); });
-
-    lockAgain.addEventListener('click',()=>{
-      sessionStorage.removeItem(SS_KEY);
-      sessionStorage.removeItem(FAIL_KEY);
-      sessionStorage.removeItem(LOCK_KEY);
-      input='';updateDisplay();showLockedUI();
-    });
-
-    window.addEventListener('load',()=>{
-      if(sessionStorage.getItem(SS_KEY)==='true'){ showUnlockedUI(); }
-      else{ showLockedUI(); checkLock(); }
-      updateDisplay();
-    });
-  </script>
+// ページロード時にリロード保持確認
+window.onload=()=>{
+  if(isAuthenticated() && !checkLock()) unlockScreenShow();
+  else lockScreenShow();
+  updateDisplay();
+};
+</script>
 </body>
 </html>
